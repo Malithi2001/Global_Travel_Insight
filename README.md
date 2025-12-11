@@ -12,11 +12,25 @@ A full‑stack travel intelligence platform providing real-time country data, we
 
 ## Structure
 ```
-backend/   → Express API, auth, DB models, services
-frontend/  → React UI, pages, components
-docs/      → Documentation
-diagrams/  → Architecture & flow diagrams
-tests/     → Test files
+Global_Travel_Insight/
+ ├── backend/          
+ ├── frontend/         
+ ├── docs/
+ │   ├── API.md
+ │   └── wiki/
+ │       ├── Overview.md
+ │       ├── Architecture.md
+ │       ├── Security.md
+ │       └── Setup_and_Deployment.md
+ ├── diagrams/
+ ├── tests/
+ ├── .github/
+ │   ├── ISSUE_TEMPLATE/
+ │   ├── workflows/ci.yml
+ │   └── pull_request_template.md
+ ├── LICENSE
+ ├── CONTRIBUTING.md
+ └── README.md
 ```
 
 ## Setup
