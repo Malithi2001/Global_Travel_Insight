@@ -1,0 +1,257 @@
+name: AI Generated Multi-Stack CI
+
+'on':
+  push:
+    branches: [main, master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+
+  node-ci-backend:
+    name: Node CI (backend)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CI: true
+    defaults:
+      run:
+        shell: bash
+        working-directory: 'backend'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Enable package manager shims
+        run: corepack enable || true
+
+      - name: Install dependencies
+        run: |
+          if [ ! -f package.json ]; then
+            echo "No package.json found in this project directory."
+            exit 0
+          fi
+
+          if [ -f pnpm-lock.yaml ]; then
+            pnpm install --frozen-lockfile
+          elif [ -f yarn.lock ]; then
+            yarn install --frozen-lockfile
+          elif [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ]; then
+            npm ci
+          elif [ "npm" = "pnpm" ]; then
+            pnpm install
+          elif [ "npm" = "yarn" ]; then
+            yarn install
+          else
+            npm install
+          fi
+
+      - name: Run tests
+        run: |
+          if [ ! -f package.json ]; then
+            echo "No package.json found in this project directory."
+            exit 0
+          fi
+
+          if node -e "const s=require('./package.json').scripts||{}; process.exit(s['test'] ? 0 : 1)"; then
+            if [ -f pnpm-lock.yaml ]; then
+              pnpm test
+            elif [ -f yarn.lock ]; then
+              yarn test
+            else
+              npm test
+            fi
+          else
+            echo "No test script found."
+          fi
+
+      - name: Build
+        run: |
+          if [ ! -f package.json ]; then
+            echo "No package.json found in this project directory."
+            exit 0
+          fi
+
+          if node -e "const s=require('./package.json').scripts||{}; process.exit(s['build'] ? 0 : 1)"; then
+            if [ -f pnpm-lock.yaml ]; then
+              pnpm run build
+            elif [ -f yarn.lock ]; then
+              yarn run build
+            else
+              npm run build
+            fi
+          else
+            echo "No build script found."
+          fi
+
+  node-ci-gti-backend-final:
+    name: Node CI (gti-backend-final)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CI: true
+    defaults:
+      run:
+        shell: bash
+        working-directory: 'gti-backend-final'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Enable package manager shims
+        run: corepack enable || true
+
+      - name: Install dependencies
+        run: |
+          if [ ! -f package.json ]; then
+            echo "No package.json found in this project directory."
+            exit 0
+          fi
+
+          if [ -f pnpm-lock.yaml ]; then
+            pnpm install --frozen-lockfile
+          elif [ -f yarn.lock ]; then
+            yarn install --frozen-lockfile
+          elif [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ]; then
+            npm ci
+          elif [ "npm" = "pnpm" ]; then
+            pnpm install
+          elif [ "npm" = "yarn" ]; then
+            yarn install
+          else
+            npm install
+          fi
+
+      - name: Run tests
+        run: |
+          if [ ! -f package.json ]; then
+            echo "No package.json found in this project directory."
+            exit 0
+          fi
+
+          if node -e "const s=require('./package.json').scripts||{}; process.exit(s['test'] ? 0 : 1)"; then
+            if [ -f pnpm-lock.yaml ]; then
+              pnpm test
+            elif [ -f yarn.lock ]; then
+              yarn test
+            else
+              npm test
+            fi
+          else
+            echo "No test script found."
+          fi
+
+      - name: Build
+        run: |
+          if [ ! -f package.json ]; then
+            echo "No package.json found in this project directory."
+            exit 0
+          fi
+
+          if node -e "const s=require('./package.json').scripts||{}; process.exit(s['build'] ? 0 : 1)"; then
+            if [ -f pnpm-lock.yaml ]; then
+              pnpm run build
+            elif [ -f yarn.lock ]; then
+              yarn run build
+            else
+              npm run build
+            fi
+          else
+            echo "No build script found."
+          fi
+
+  node-ci-gti-frontend-final:
+    name: Node CI (gti-frontend-final)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CI: true
+    defaults:
+      run:
+        shell: bash
+        working-directory: 'gti-frontend-final'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Enable package manager shims
+        run: corepack enable || true
+
+      - name: Install dependencies
+        run: |
+          if [ ! -f package.json ]; then
+            echo "No package.json found in this project directory."
+            exit 0
+          fi
+
+          if [ -f pnpm-lock.yaml ]; then
+            pnpm install --frozen-lockfile
+          elif [ -f yarn.lock ]; then
+            yarn install --frozen-lockfile
+          elif [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ]; then
+            npm ci
+          elif [ "npm" = "pnpm" ]; then
+            pnpm install
+          elif [ "npm" = "yarn" ]; then
+            yarn install
+          else
+            npm install
+          fi
+
+      - name: Run tests
+        run: |
+          if [ ! -f package.json ]; then
+            echo "No package.json found in this project directory."
+            exit 0
+          fi
+
+          if node -e "const s=require('./package.json').scripts||{}; process.exit(s['test'] ? 0 : 1)"; then
+            if [ -f pnpm-lock.yaml ]; then
+              pnpm test
+            elif [ -f yarn.lock ]; then
+              yarn test
+            else
+              npm test
+            fi
+          else
+            echo "No test script found."
+          fi
+
+      - name: Build
+        run: |
+          if [ ! -f package.json ]; then
+            echo "No package.json found in this project directory."
+            exit 0
+          fi
+
+          if node -e "const s=require('./package.json').scripts||{}; process.exit(s['build'] ? 0 : 1)"; then
+            if [ -f pnpm-lock.yaml ]; then
+              pnpm run build
+            elif [ -f yarn.lock ]; then
+              yarn run build
+            else
+              npm run build
+            fi
+          else
+            echo "No build script found."
+          fi
